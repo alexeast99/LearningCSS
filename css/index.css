@@ -1,0 +1,116 @@
+
+/*
+    Special selector that targets the root element
+    with more specificity (class vs tag) than just <html>
+*/
+:root {
+
+    /* Alter the default font-size using ems */
+    font-size: 0.75em;
+
+    /* Define a varible called main-font. Variables must
+    be declared within declaration blocks */
+    --main-font: Helvetica, Arial, sans-serif;
+    --brand-color: #369;
+}
+
+/*
+    The first line-height value is inherited by all elements
+    in the body. However, once it's inherited, line height is
+    calculated as (line height) * (font-size), which is why it's
+    allowed to be unitless
+
+    If, instead, units are included, that line height is
+    inherited directly, regardless of an element's font
+    size. This is problematic, since elements with a large
+    font size might have text that bleeds into eachother, and
+    elements with small font size might have an unpleasing
+    amount of space between the lines.
+*/
+body {
+    line-height: 1.2;
+    /* line-height: 1.2em; */
+}
+
+/*
+    Use rems for font-size, px for borders, and ems
+    for most other properties
+*/
+.panel {
+    font-size: 1.0rem;
+    padding: 1em;   /* Relative to parent's font-size */
+    border-radius: 0.5em;
+    border: 1px solid #999;
+  }
+
+/*
+    > Is a direct descendent combinator that targets an
+    h2 whose parent has a .panel class  
+*/
+.panel > h2 {
+    margin-top: 0;
+    font-size: 1.2em;  /* Relative to root element font-size */
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/* Elements with both panel and large classes */
+.panel.large {
+    font-size: 2rem;
+
+    /* Able to reference variables using the var() function.
+    
+    The var() function accepst a second argument that defines
+    the fallback value if the request variable is undefined.
+    If the calculated value is invalid for a property, the
+    default value is used */
+    font: var(--main-font);
+}
+
+/*
+  Media queries apply only to screens that meet the requirements
+  set in parantheses
+*/
+@media ( min-width: 800px ) {
+    :root {
+        font-size: 0.875em;
+    }
+}
+
+@media ( min-width: 1200px ) {
+    :root {
+        font-size: 1.0em;
+    }
+}
+
+/*
+    vh - 1/100th viewport height
+    vw - 1/100th viewport width
+    vmin - 1/100th min(height, width)
+    vmax - 1/100th max(height, width)
+*/
+.square {
+    background-color: #333;
+    color: #ccc;
+    height: 25vmin;
+    width: 25vmin;
+    text-align: center;
+    padding: 1.5em;
+    font-size: 1.3rem;
+}
+
+/*
+    Can also use calc() function to calculate value
+    between different units. Ex: font-size: calc(1rem + 10px)
+    This is useful for responsiveness and fluidity at any size
+    without using media queries
+*/
+.calcd {
+    width: 50vw;
+    height: 10vh;
+    background-color: #333;
+    color: #ccc;
+    text-align: left;
+    padding: 1em;
+    font-size: calc(1.2em + 5px);
+}
