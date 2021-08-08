@@ -1,0 +1,215 @@
+/*
+    This, along with the proceeding inherit, allows
+    the box-sizing fix to be applied to all elements.
+    If there are third party CSS plugins that don't
+    use box-sizing: border-box; , this also allows
+    those elements to be fixed by targeting the top
+    level element with box-sizing: content-box , which
+    will then trickle down to child elements because
+    of the inherit property
+*/
+:root {
+    box-sizing: border-box;
+}
+
+/*
+    The default value for box-sizing is content-box. The new
+    value, border-box, ensures that the width property affects
+    the entire element excluding padding. Therefore, with the
+    padding and border set, as the width changes the inner content
+    box either gets smaller or bigger, but the outer box is exactly
+    what we would expect.
+
+    This rule uses the universal selector as well as before and
+    after selectors to target pseudo-elements
+*/
+*,
+::before,
+::after {
+    box-sizing: inherit;
+}
+
+body {
+    background-color: #eee;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/*
+    The Lobotomized Owl selector. Selects all elements that immediately
+    follow another element. This is used to gracefully and dynamically
+    add spacing between elements
+
+    This has the negative side effect of requiring that elements whose
+    margin-top should be 0 must be set explicitly
+*/
+body * + * {
+    margin-top: 1.5em;
+}
+
+header {
+  padding: 1em 1.5em;
+  color: #fff;
+  background-color: #0072b0;
+  border-radius: 0.5em;
+}
+
+main {
+    display: block; /* Fixes IE bug */
+}
+
+
+/*
+    A width of 70% and 30% on adjacent elements causes a
+    line wrap to occur. This is because the width property
+    specifies the width of the content of the element, excluding
+    margin, padding, and border. Therefore, with the latter
+    properties' widths added to the specified width, the elements
+    take up more than just 100% of the page.
+
+    This is changed by the universal selector above
+*/
+/* Rev. 1
+.main {
+    box-sizing: border-box;
+    float: left;
+    width: 70%;
+    background-color: #fff;
+    border-radius: 0.5em;
+}
+
+.sidebar {
+    box-sizing: border-box;
+    float: left;
+
+    /*Convenient way to subtract from the width and add
+    to the margin for a gutter
+    width: calc(30% - 1.5em);
+    margin-left: 1.5em;
+    padding: 1.5em; /* Add padding to give height
+    background-color: #fff;
+    border-radius: 0.5em;
+}
+*/
+
+/*
+    Rev. 2
+
+    Deals with making the two page columns equal height. Percentages
+    should not be used for height, since it's behavior is circular. A
+    height using a percentage depends on its parent's height, while the
+    parent's height depends on the value of the children. Therefore, the
+    browser ignores the rule, except where the parent has an absolute
+    height.
+
+    main and sidebar are children of an element with the container
+    class. Here, the container class is a assigned a display of
+    table, which makes it a CSS (not HTML) table. This is useful
+    to create equal height columns.
+
+.container {
+    display: table;
+    width: 100%;
+}
+
+.main {
+    display: table-cell;
+    width: 70%; 70% the width of the table
+    background-color: #fff;
+    border-radius: .5em;
+}
+
+
+    Margins don't work in tables, so that rule is excluded. Could
+    use the border-spacing property to set horizontal and vertical
+    gutters, but this applies to the outside of the table and must
+    be compensated for
+
+.sidebar {
+    display: table-cell;
+    width: 30%;
+    padding: 1.5em;
+    background-color: #fff;
+    border-radius: 0.5em;
+}*/
+
+/*
+    Rev. 3 Using flexbox
+*/
+
+/*
+    Flexbox does not require an extra div wrapper- it automatically
+    produces elements of equal height. This also has the benefit of
+    not needing to specify float or display on elements that are
+    children of an element with dispaly: flex
+*/
+.container {
+    display: flex;
+}
+
+/*
+    Widths that add up to more than 100%, like .main and .sidebar
+    after including padding and margins, are automatically handled
+    by the flexbox
+
+    Top and bottom adjacent margins collapse to be equal to the size
+    of the larger margin. This does not apply to left and right margins,
+    and does not apply to elements with display: flex
+
+    Additionally, margins may bleed outside of their element's container.
+    If this happens, it's possible to prevent bleeding by adding a padding
+    to the container
+
+    overflow: auto will also prevent margin bleed
+
+    Border or padding between margins prevents collapsing
+
+    Margins won't collapse outside a container that is floated,
+    inline block, absolute or fixed position
+
+    Note: As much as possible, try not to set the height for
+    elements. Look for alternative approaches first
+*/
+.main {
+    width: 70%;
+    padding: 1em 1.5em;
+    background-color: #fff;
+    border-radius: 0.5em;
+}
+
+.sidebar {
+    width: 30%;
+    padding: 1.5em;
+    margin-top: 0;
+    margin-left: 1.5em;
+    background-color: #fff;
+    border-radius: 0.5em;
+}
+
+/*
+    Block displays fill the width of their container and put
+    each block element on its own line
+*/
+.button-link {
+    display: block;
+    padding: 0.5em;
+    color: #fff;
+    background-color: #0090c9;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+/*
+    + is the adjacent sibling combinator. Here, it will only
+    button-links that immediately follow sibling button-links
+*/
+.button-link + .button-link {
+    margin-top: 1.5em;
+}
+
+.sponsor-link {
+    display: block;
+    color: #0072b0;
+    font-weight: bold;
+    text-decoration: none;
+}
